@@ -1,0 +1,70 @@
+basePath: /
+definitions:
+  models.MensagemRequest:
+    properties:
+      chave:
+        type: string
+      texto:
+        type: string
+    required:
+    - chave
+    - texto
+    type: object
+  models.MensagemResponse:
+    properties:
+      resultado:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API que implementa a cifra de Vernam (criptografia e descriptografia
+    de mensagens).
+  title: API Cifra de Vernam
+  version: "1.0"
+paths:
+  /criptografar:
+    post:
+      consumes:
+      - application/json
+      description: Aplica a cifra de Vernam ao texto fornecido com a chave informada.
+      parameters:
+      - description: Texto e chave
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.MensagemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MensagemResponse'
+      summary: Criptografa uma mensagem
+      tags:
+      - criptografia
+  /descriptografar:
+    post:
+      consumes:
+      - application/json
+      description: Aplica a cifra de Vernam ao texto fornecido com a chave informada.
+      parameters:
+      - description: Texto e chave
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.MensagemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MensagemResponse'
+      summary: Descriptografa uma mensagem
+      tags:
+      - descriptografia
+swagger: "2.0"

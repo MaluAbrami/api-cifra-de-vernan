@@ -1,0 +1,106 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API que implementa a cifra de Vernam (criptografia e descriptografia de mensagens).",
+        "title": "API Cifra de Vernam",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/criptografar": {
+            "post": {
+                "description": "Aplica a cifra de Vernam ao texto fornecido com a chave informada.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "criptografia"
+                ],
+                "summary": "Criptografa uma mensagem",
+                "parameters": [
+                    {
+                        "description": "Texto e chave",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.MensagemRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.MensagemResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/descriptografar": {
+            "post": {
+                "description": "Aplica a cifra de Vernam ao texto fornecido com a chave informada.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "descriptografia"
+                ],
+                "summary": "Descriptografa uma mensagem",
+                "parameters": [
+                    {
+                        "description": "Texto e chave",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.MensagemRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.MensagemResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.MensagemRequest": {
+            "type": "object",
+            "required": [
+                "chave",
+                "texto"
+            ],
+            "properties": {
+                "chave": {
+                    "type": "string"
+                },
+                "texto": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.MensagemResponse": {
+            "type": "object",
+            "properties": {
+                "resultado": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
