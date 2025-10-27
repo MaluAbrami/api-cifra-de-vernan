@@ -15,7 +15,41 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/criptografar": {
+        "/criptografar-com-chave-aleatoria": {
+            "post": {
+                "description": "Aplica a cifra de Vernam ao texto fornecido com chave aleatória.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "criptografia"
+                ],
+                "summary": "Criptografar com chave aleatória",
+                "parameters": [
+                    {
+                        "description": "Texto e chave",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CriptografiaChaveAleatoriaRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.CriptografiaChaveAleatoriaResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/criptografar-com-chave-propria": {
             "post": {
                 "description": "Aplica a cifra de Vernam ao texto fornecido com a chave informada.",
                 "consumes": [
@@ -27,11 +61,7 @@ const docTemplate = `{
                 "tags": [
                     "criptografia"
                 ],
-<<<<<<< HEAD
-                "summary": "Criptografar mensagem usando Cifra de Vernam",
-=======
-                "summary": "Criptografa uma mensagem",
->>>>>>> 954bccafba7996c3b4efb809c5ea7e968869aac6
+                "summary": "Criptografar com sua chave",
                 "parameters": [
                     {
                         "description": "Texto e chave",
@@ -39,7 +69,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.MensagemRequest"
+                            "$ref": "#/definitions/models.CriptoDescriptoRequest"
                         }
                     }
                 ],
@@ -47,7 +77,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.MensagemResponse"
+                            "$ref": "#/definitions/models.CriptoDescriptoResponse"
                         }
                     }
                 }
@@ -65,11 +95,7 @@ const docTemplate = `{
                 "tags": [
                     "descriptografia"
                 ],
-<<<<<<< HEAD
                 "summary": "Descriptografar mensagem com cifra de vernan",
-=======
-                "summary": "Descriptografa uma mensagem",
->>>>>>> 954bccafba7996c3b4efb809c5ea7e968869aac6
                 "parameters": [
                     {
                         "description": "Texto e chave",
@@ -77,7 +103,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.MensagemRequest"
+                            "$ref": "#/definitions/models.CriptoDescriptoRequest"
                         }
                     }
                 ],
@@ -85,7 +111,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.MensagemResponse"
+                            "$ref": "#/definitions/models.CriptoDescriptoResponse"
                         }
                     }
                 }
@@ -93,7 +119,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.MensagemRequest": {
+        "models.CriptoDescriptoRequest": {
             "type": "object",
             "required": [
                 "chave",
@@ -108,10 +134,32 @@ const docTemplate = `{
                 }
             }
         },
-        "models.MensagemResponse": {
+        "models.CriptoDescriptoResponse": {
             "type": "object",
             "properties": {
                 "resultado": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CriptografiaChaveAleatoriaRequest": {
+            "type": "object",
+            "required": [
+                "texto"
+            ],
+            "properties": {
+                "texto": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.CriptografiaChaveAleatoriaResponse": {
+            "type": "object",
+            "properties": {
+                "chave_usada": {
+                    "type": "string"
+                },
+                "texto_criptografado": {
                     "type": "string"
                 }
             }

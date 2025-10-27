@@ -18,7 +18,8 @@ func main() {
 	r := gin.Default()
 
 	//rota da controller
-	r.POST("/criptografar", controllers.Criptografar)
+	r.POST("/criptografar-com-chave-aleatoria", controllers.CriptografarComChaveAleatoria)
+	r.POST("/criptografar-com-chave-propria", controllers.CriptografarComChavePropria)
 	r.POST("/descriptografar", controllers.Descriptografar)
 
 	//rota para a documentacao da API Swagger

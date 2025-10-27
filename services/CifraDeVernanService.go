@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"math/rand"
 )
 
 func AplicarCifraDeVernan(texto string, chave string) (string, error) {
@@ -20,4 +21,26 @@ func AplicarCifraDeVernan(texto string, chave string) (string, error) {
 	}
 
 	return string(result), nil
+}
+
+func Criptografar(texto string) (string, string, error) {
+	textoRunes := []rune(texto)
+	chave := GerarChaveAleatoria(len(textoRunes))
+
+	textoCriptografado, err := AplicarCifraDeVernan(texto, chave)
+	if err != nil {
+		return "", "", err
+	}
+
+	return textoCriptografado, chave, nil
+}
+
+func GerarChaveAleatoria(tamanho int) string {
+	chave := make([]rune, tamanho)
+
+	for i := 0; i < tamanho; i++ {
+		chave[i] = rune(rand.Intn(95) + 32) // ASCII imprimível: 32-126
+	}
+
+	return string(chave)
 }

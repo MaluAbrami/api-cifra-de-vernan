@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  models.MensagemRequest:
+  models.CriptoDescriptoRequest:
     properties:
       chave:
         type: string
@@ -10,9 +10,23 @@ definitions:
     - chave
     - texto
     type: object
-  models.MensagemResponse:
+  models.CriptoDescriptoResponse:
     properties:
       resultado:
+        type: string
+    type: object
+  models.CriptografiaChaveAleatoriaRequest:
+    properties:
+      texto:
+        type: string
+    required:
+    - texto
+    type: object
+  models.CriptografiaChaveAleatoriaResponse:
+    properties:
+      chave_usada:
+        type: string
+      texto_criptografado:
         type: string
     type: object
 host: localhost:8080
@@ -23,7 +37,29 @@ info:
   title: API Cifra de Vernam
   version: "1.0"
 paths:
-  /criptografar:
+  /criptografar-com-chave-aleatoria:
+    post:
+      consumes:
+      - application/json
+      description: Aplica a cifra de Vernam ao texto fornecido com chave aleatória.
+      parameters:
+      - description: Texto e chave
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CriptografiaChaveAleatoriaRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CriptografiaChaveAleatoriaResponse'
+      summary: Criptografar com chave aleatória
+      tags:
+      - criptografia
+  /criptografar-com-chave-propria:
     post:
       consumes:
       - application/json
@@ -34,19 +70,15 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.MensagemRequest'
+          $ref: '#/definitions/models.CriptoDescriptoRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.MensagemResponse'
-<<<<<<< HEAD
-      summary: Criptografar mensagem usando Cifra de Vernam
-=======
-      summary: Criptografa uma mensagem
->>>>>>> 954bccafba7996c3b4efb809c5ea7e968869aac6
+            $ref: '#/definitions/models.CriptoDescriptoResponse'
+      summary: Criptografar com sua chave
       tags:
       - criptografia
   /descriptografar:
@@ -60,19 +92,15 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.MensagemRequest'
+          $ref: '#/definitions/models.CriptoDescriptoRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.MensagemResponse'
-<<<<<<< HEAD
+            $ref: '#/definitions/models.CriptoDescriptoResponse'
       summary: Descriptografar mensagem com cifra de vernan
-=======
-      summary: Descriptografa uma mensagem
->>>>>>> 954bccafba7996c3b4efb809c5ea7e968869aac6
       tags:
       - descriptografia
 swagger: "2.0"

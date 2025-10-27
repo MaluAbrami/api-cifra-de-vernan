@@ -1,5 +1,5 @@
 package models
 
-type MensagemResponse struct {
+type CriptoDescriptoResponse struct {
 	Resultado string `json:"resultado"`
 }
