@@ -17,7 +17,7 @@ func main() {
 	//cria instancia do servidor
 	r := gin.Default()
 
-	//rotas de criptografia e descriptografia
+	//rota da controller
 	r.POST("/criptografar", controllers.Criptografar)
 	r.POST("/descriptografar", controllers.Descriptografar)
 
