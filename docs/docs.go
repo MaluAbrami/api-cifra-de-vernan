@@ -27,7 +27,11 @@ const docTemplate = `{
                 "tags": [
                     "criptografia"
                 ],
+<<<<<<< HEAD
                 "summary": "Criptografar mensagem usando Cifra de Vernam",
+=======
+                "summary": "Criptografa uma mensagem",
+>>>>>>> 954bccafba7996c3b4efb809c5ea7e968869aac6
                 "parameters": [
                     {
                         "description": "Texto e chave",
@@ -61,7 +65,11 @@ const docTemplate = `{
                 "tags": [
                     "descriptografia"
                 ],
+<<<<<<< HEAD
                 "summary": "Descriptografar mensagem com cifra de vernan",
+=======
+                "summary": "Descriptografa uma mensagem",
+>>>>>>> 954bccafba7996c3b4efb809c5ea7e968869aac6
                 "parameters": [
                     {
                         "description": "Texto e chave",
