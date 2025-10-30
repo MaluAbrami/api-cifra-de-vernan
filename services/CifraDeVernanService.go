@@ -2,45 +2,62 @@ package services
 
 import (
 	"errors"
-	"math/rand"
+	"fmt"
+	"strconv"
+	"strings"
 )
 
 func AplicarCifraDeVernan(texto string, chave string) (string, error) {
-	textoRunes := []rune(texto)
+	if texto == "" || chave == "" {
+		return "", errors.New("texto e chave não podem ser vazios")
+	}
+
+	// Detecta se o texto é binário (só contém 0 e 1)
+	isBinary := strings.IndexFunc(texto, func(r rune) bool {
+		return r != '0' && r != '1'
+	}) == -1
+
+	// Caso 1: Texto comum → cifrar
+	if !isBinary {
+		textoRunes := []rune(texto)
+		chaveRunes := []rune(chave)
+
+		if len(chaveRunes) < len(textoRunes) {
+			return "", errors.New("a chave deve ser do mesmo tamanho ou maior que o texto")
+		}
+
+		var builder strings.Builder
+		for i, c := range textoRunes {
+			cifrado := c ^ chaveRunes[i]
+			builder.WriteString(fmt.Sprintf("%016b", cifrado)) // escreve como binário
+		}
+		return builder.String(), nil
+	}
+
+	// Caso 2: Texto binário → decifrar
+	if len(texto)%16 != 0 {
+		return "", errors.New("texto cifrado inválido (comprimento não é múltiplo de 16)")
+	}
+
+	var builder strings.Builder
 	chaveRunes := []rune(chave)
 
-	// Valida tamanho da chave
-	if len(chaveRunes) < len(textoRunes) {
-		return "", errors.New("A chave deve ser do mesmo tamanho ou maior que o texto.")
+	// número de runes codificados no binário
+	numRunes := len(texto) / 16
+	if len(chaveRunes) < numRunes {
+		return "", errors.New("a chave deve ser do mesmo tamanho ou maior que o texto original")
 	}
 
-	result := make([]rune, len(textoRunes))
+	for i := 0; i < numRunes; i++ {
+		binSegment := texto[i*16 : (i+1)*16]
+		value, err := strconv.ParseInt(binSegment, 2, 32)
+		if err != nil {
+			return "", fmt.Errorf("erro ao converter binário: %v", err)
+		}
 
-	for i, c := range textoRunes {
-		result[i] = c ^ chaveRunes[i] // aplica XOR entre cada caractere
+		decifrado := rune(value) ^ chaveRunes[i]
+		builder.WriteRune(decifrado)
 	}
 
-	return string(result), nil
-}
-
-func Criptografar(texto string) (string, string, error) {
-	textoRunes := []rune(texto)
-	chave := GerarChaveAleatoria(len(textoRunes))
-
-	textoCriptografado, err := AplicarCifraDeVernan(texto, chave)
-	if err != nil {
-		return "", "", err
-	}
-
-	return textoCriptografado, chave, nil
-}
-
-func GerarChaveAleatoria(tamanho int) string {
-	chave := make([]rune, tamanho)
-
-	for i := 0; i < tamanho; i++ {
-		chave[i] = rune(rand.Intn(95) + 32) // ASCII imprimível: 32-126
-	}
-
-	return string(chave)
+	return builder.String(), nil
 }

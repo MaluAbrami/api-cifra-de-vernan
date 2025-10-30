@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/MaluAbrami/api-cifra-de-vernan/controllers"
 	_ "github.com/MaluAbrami/api-cifra-de-vernan/docs"
 	"github.com/gin-gonic/gin"
@@ -8,23 +10,36 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// Middleware simples para liberar CORS no Gin
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if c.Request.Method == http.MethodOptions {
+			c.AbortWithStatus(http.StatusNoContent)
+			return
+		}
+
+		c.Next()
+	}
+}
+
 // @title API Cifra de Vernam
 // @version 1.0
 // @description API que implementa a cifra de Vernam (criptografia e descriptografia de mensagens).
 // @host localhost:8080
 // @BasePath /
 func main() {
-	//cria instancia do servidor
 	r := gin.Default()
 
-	//rota da controller
-	r.POST("/criptografar-com-chave-aleatoria", controllers.CriptografarComChaveAleatoria)
-	r.POST("/criptografar-com-chave-propria", controllers.CriptografarComChavePropria)
-	r.POST("/descriptografar", controllers.Descriptografar)
+	r.Use(CORSMiddleware())
 
-	//rota para a documentacao da API Swagger
+	r.POST("/cifrar", controllers.Cifrar)
+	r.POST("/decifrar", controllers.Decifrar)
+
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	//inicia o servidor na porta 8080
 	r.Run(":8080")
 }

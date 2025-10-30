@@ -15,41 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/criptografar-com-chave-aleatoria": {
-            "post": {
-                "description": "Aplica a cifra de Vernam ao texto fornecido com chave aleatória.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "criptografia"
-                ],
-                "summary": "Criptografar com chave aleatória",
-                "parameters": [
-                    {
-                        "description": "Texto e chave",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.CriptografiaChaveAleatoriaRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.CriptografiaChaveAleatoriaResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/criptografar-com-chave-propria": {
+        "/cifrar": {
             "post": {
                 "description": "Aplica a cifra de Vernam ao texto fornecido com a chave informada.",
                 "consumes": [
@@ -61,7 +27,7 @@ const docTemplate = `{
                 "tags": [
                     "criptografia"
                 ],
-                "summary": "Criptografar com sua chave",
+                "summary": "Cifrar uma mensagem com uma chave",
                 "parameters": [
                     {
                         "description": "Texto e chave",
@@ -69,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CriptoDescriptoRequest"
+                            "$ref": "#/definitions/models.RequestCifrarDTO"
                         }
                     }
                 ],
@@ -77,13 +43,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.CriptoDescriptoResponse"
+                            "$ref": "#/definitions/models.ResponseCifrarDTO"
                         }
                     }
                 }
             }
         },
-        "/descriptografar": {
+        "/decifrar": {
             "post": {
                 "description": "Aplica a cifra de Vernam ao texto fornecido com a chave informada.",
                 "consumes": [
@@ -95,7 +61,7 @@ const docTemplate = `{
                 "tags": [
                     "descriptografia"
                 ],
-                "summary": "Descriptografar mensagem com cifra de vernan",
+                "summary": "Decifrar mensagem com cifra de vernan",
                 "parameters": [
                     {
                         "description": "Texto e chave",
@@ -103,7 +69,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CriptoDescriptoRequest"
+                            "$ref": "#/definitions/models.RequestDecifrarDTO"
                         }
                     }
                 ],
@@ -111,7 +77,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.CriptoDescriptoResponse"
+                            "$ref": "#/definitions/models.ResponseDecifrarDTO"
                         }
                     }
                 }
@@ -119,47 +85,47 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.CriptoDescriptoRequest": {
+        "models.RequestCifrarDTO": {
             "type": "object",
             "required": [
                 "chave",
-                "texto"
+                "textoClaro"
             ],
             "properties": {
                 "chave": {
                     "type": "string"
                 },
-                "texto": {
+                "textoClaro": {
                     "type": "string"
                 }
             }
         },
-        "models.CriptoDescriptoResponse": {
+        "models.RequestDecifrarDTO": {
             "type": "object",
             "properties": {
-                "resultado": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.CriptografiaChaveAleatoriaRequest": {
-            "type": "object",
-            "required": [
-                "texto"
-            ],
-            "properties": {
-                "texto": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.CriptografiaChaveAleatoriaResponse": {
-            "type": "object",
-            "properties": {
-                "chave_usada": {
+                "chave": {
                     "type": "string"
                 },
-                "texto_criptografado": {
+                "textoCifrado": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ResponseCifrarDTO": {
+            "type": "object",
+            "properties": {
+                "textoCifrado": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ResponseDecifrarDTO": {
+            "type": "object",
+            "required": [
+                "textoClaro"
+            ],
+            "properties": {
+                "textoClaro": {
                     "type": "string"
                 }
             }

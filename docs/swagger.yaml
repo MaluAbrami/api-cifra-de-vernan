@@ -1,33 +1,33 @@
 basePath: /
 definitions:
-  models.CriptoDescriptoRequest:
+  models.RequestCifrarDTO:
     properties:
       chave:
         type: string
-      texto:
+      textoClaro:
         type: string
     required:
     - chave
-    - texto
+    - textoClaro
     type: object
-  models.CriptoDescriptoResponse:
+  models.RequestDecifrarDTO:
     properties:
-      resultado:
+      chave:
+        type: string
+      textoCifrado:
         type: string
     type: object
-  models.CriptografiaChaveAleatoriaRequest:
+  models.ResponseCifrarDTO:
     properties:
-      texto:
+      textoCifrado:
+        type: string
+    type: object
+  models.ResponseDecifrarDTO:
+    properties:
+      textoClaro:
         type: string
     required:
-    - texto
-    type: object
-  models.CriptografiaChaveAleatoriaResponse:
-    properties:
-      chave_usada:
-        type: string
-      texto_criptografado:
-        type: string
+    - textoClaro
     type: object
 host: localhost:8080
 info:
@@ -37,29 +37,7 @@ info:
   title: API Cifra de Vernam
   version: "1.0"
 paths:
-  /criptografar-com-chave-aleatoria:
-    post:
-      consumes:
-      - application/json
-      description: Aplica a cifra de Vernam ao texto fornecido com chave aleatória.
-      parameters:
-      - description: Texto e chave
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/models.CriptografiaChaveAleatoriaRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.CriptografiaChaveAleatoriaResponse'
-      summary: Criptografar com chave aleatória
-      tags:
-      - criptografia
-  /criptografar-com-chave-propria:
+  /cifrar:
     post:
       consumes:
       - application/json
@@ -70,18 +48,18 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.CriptoDescriptoRequest'
+          $ref: '#/definitions/models.RequestCifrarDTO'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.CriptoDescriptoResponse'
-      summary: Criptografar com sua chave
+            $ref: '#/definitions/models.ResponseCifrarDTO'
+      summary: Cifrar uma mensagem com uma chave
       tags:
       - criptografia
-  /descriptografar:
+  /decifrar:
     post:
       consumes:
       - application/json
@@ -92,15 +70,15 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.CriptoDescriptoRequest'
+          $ref: '#/definitions/models.RequestDecifrarDTO'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.CriptoDescriptoResponse'
-      summary: Descriptografar mensagem com cifra de vernan
+            $ref: '#/definitions/models.ResponseDecifrarDTO'
+      summary: Decifrar mensagem com cifra de vernan
       tags:
       - descriptografia
 swagger: "2.0"

@@ -8,77 +8,52 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary Criptografar com chave aleatória
-// @Description Aplica a cifra de Vernam ao texto fornecido com chave aleatória.
-// @Tags criptografia
-// @Accept  json
-// @Produce  json
-// @Param request body models.CriptografiaChaveAleatoriaRequest true "Texto e chave"
-// @Success 200 {object} models.CriptografiaChaveAleatoriaResponse
-// @Router /criptografar-com-chave-aleatoria [post]
-func CriptografarComChaveAleatoria(c *gin.Context) {
-	var req models.CriptografiaChaveAleatoriaRequest
-
-	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"Erro:": err.Error()})
-		return
-	}
-
-	result, chave, err := services.Criptografar(req.Texto)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"Erro": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, models.CriptografiaChaveAleatoriaResponse{TextoCriptografado: result, ChaveUsada: chave})
-}
-
-// @Summary Criptografar com sua chave
+// @Summary Cifrar uma mensagem com uma chave
 // @Description Aplica a cifra de Vernam ao texto fornecido com a chave informada.
 // @Tags criptografia
 // @Accept  json
 // @Produce  json
-// @Param request body models.CriptoDescriptoRequest true "Texto e chave"
-// @Success 200 {object} models.CriptoDescriptoResponse
-// @Router /criptografar-com-chave-propria [post]
-func CriptografarComChavePropria(c *gin.Context) {
-	var req models.CriptoDescriptoRequest
+// @Param request body models.RequestCifrarDTO true "Texto e chave"
+// @Success 200 {object} models.ResponseCifrarDTO
+// @Router /cifrar [post]
+func Cifrar(c *gin.Context) {
+	var req models.RequestCifrarDTO
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"Erro:": err.Error()})
 		return
 	}
 
-	result, err := services.AplicarCifraDeVernan(req.Texto, req.Chave)
+	result, err := services.AplicarCifraDeVernan(req.TextoClaro, req.Chave)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"Erro": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, models.CriptoDescriptoResponse{Resultado: result})
+	c.JSON(http.StatusOK, models.ResponseCifrarDTO{TextoCifrado: result})
 }
 
-// @Summary Descriptografar mensagem com cifra de vernan
+// @Summary Decifrar mensagem com cifra de vernan
 // @Description Aplica a cifra de Vernam ao texto fornecido com a chave informada.
 // @Tags descriptografia
 // @Accept  json
 // @Produce  json
-// @Param request body models.CriptoDescriptoRequest true "Texto e chave"
-// @Success 200 {object} models.CriptoDescriptoResponse
-// @Router /descriptografar [post]
-func Descriptografar(c *gin.Context) {
-	var req models.CriptoDescriptoRequest
+// @Param request body models.RequestDecifrarDTO true "Texto e chave"
+// @Success 200 {object} models.ResponseDecifrarDTO
+// @Router /decifrar [post]
+func Decifrar(c *gin.Context) {
+	var req models.RequestDecifrarDTO
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"Erro:": err.Error()})
 		return
 	}
 
-	result, err := services.AplicarCifraDeVernan(req.Texto, req.Chave)
+	result, err := services.AplicarCifraDeVernan(req.TextoCifrado, req.Chave)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"Erro": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, models.CriptoDescriptoResponse{Resultado: result})
+	c.JSON(http.StatusOK, models.ResponseDecifrarDTO{TextoClaro: result})
 }
